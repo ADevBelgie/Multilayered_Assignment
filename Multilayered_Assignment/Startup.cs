@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Multilayered_Assignment.Data;
+using Multilayered_Assignment.BLL;
+using Multilayered_Assignment.DAL;
 
 namespace Multilayered_Assignment
 {
@@ -23,8 +23,8 @@ namespace Multilayered_Assignment
         {
             services.AddControllersWithViews();
 
-            services.AddDbContext<Multilayered_AssignmentContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("Multilayered_Assignment")));
+            services.RegisterDAL(Configuration);
+            services.RegisterBLL();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>

@@ -41,6 +41,7 @@ namespace Multilayered_Assignment.DAL.Data.Repositories.ShoppingItem
         public void RemoveShoppingItem(ShoppingItemViewModel shoppingItem)
         {
             _context.ShoppingItemViewModel.Remove(shoppingItem);
+            Save();
         }
 
         public void Save()

@@ -61,21 +61,8 @@ namespace Multilayered_Assignment.Controllers
                 Shoppingbags = new List<ShoppingBagViewModel>();
             }
 
-            // Add shopping bag to user if it hasnt been added already
-            if (currentUser.ShoppingBagId == 0)
-            {
-                // Add shopping bag
-                _shoppingBagService.AddShoppingBag(new ShoppingBagViewModel()
-                {
-                    LoginId = currentUser.LoginId,
-                    TimeCreated = DateTime.Now
-                });
-
-                // Add ShoppingBagId to LoginViewModel
-                var currentShoppingBag = Shoppingbags.FirstOrDefault(l => l.LoginId == currentUser.LoginId);
-                currentUser.ShoppingBagId = currentShoppingBag.ShoppingBagId;
-                _accountService.UpdateLoginByID(currentUser);
-            }
+            // Add shopping bag to user if it cant find the bag trough ShoppingBagId
+            AddShoppingBagToUser(currentUser, Shoppingbags);
 
             var productToUpdate = ShoppingItems.Find(p => p.ProductId == id && p.ShoppingBagId == currentUser.ShoppingBagId);
             if (productToUpdate != null)
@@ -124,21 +111,8 @@ namespace Multilayered_Assignment.Controllers
                 Shoppingbags = new List<ShoppingBagViewModel>();
             }
 
-            // Add shopping bag to user if it hasnt been added already
-            if (currentUser.ShoppingBagId == 0)
-            {
-                // Add shopping bag
-                _shoppingBagService.AddShoppingBag(new ShoppingBagViewModel()
-                {
-                    LoginId = currentUser.LoginId,
-                    TimeCreated = DateTime.Now
-                });
-
-                // Add ShoppingBagId to LoginViewModel
-                var currentShoppingBag = Shoppingbags.FirstOrDefault(l => l.LoginId == currentUser.LoginId);
-                currentUser.ShoppingBagId = currentShoppingBag.ShoppingBagId;
-                _accountService.UpdateLoginByID(currentUser);
-            }
+            // Add shopping bag to user if it cant find the bag trough ShoppingBagId
+            AddShoppingBagToUser(currentUser, Shoppingbags);
 
             var shoppingItemToRemove = ShoppingItems.Find(p => p.ProductId == id && p.ShoppingBagId == currentUser.ShoppingBagId);
             if (shoppingItemToRemove != null)
@@ -159,6 +133,28 @@ namespace Multilayered_Assignment.Controllers
         private bool ShoppingcartViewModelExists(int id)
         {
             return _shoppingItemService.GetAllShoppingItems().Any(e => e.ID == id);
+        }
+        private void AddShoppingBagToUser(LoginViewModel currentUser, List<ShoppingBagViewModel> Shoppingbags)
+        {
+            var currentBag = _shoppingBagService.GetAllShoppingBags().FirstOrDefault(x => x.ShoppingBagId == currentUser.ShoppingBagId);
+            //if user doesnt have an exisiting bag linked to them 
+            if (currentBag == null)
+            {
+                // create shopping bag if no bag with loginID is found
+                currentBag = _shoppingBagService.GetAllShoppingBags().FirstOrDefault(x => x.LoginId == currentUser.LoginId);
+                if (currentBag == null)
+                {
+                    _shoppingBagService.AddShoppingBag(new ShoppingBagViewModel()
+                    {
+                        LoginId = currentUser.LoginId,
+                        TimeCreated = DateTime.Now
+                    });
+                }
+                
+                // Add ShoppingBagId to LoginViewModel
+                currentUser.ShoppingBagId = currentBag.ShoppingBagId;
+                _accountService.UpdateLoginByID(currentUser);
+            }
         }
     }
 }
