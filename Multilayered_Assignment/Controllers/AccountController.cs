@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Multilayered_Assignment.Data;
+using Multilayered_Assignment.BLL.Services.Account;
 using Multilayered_Assignment.Models;
 using System;
 using System.Collections.Generic;
@@ -15,10 +14,10 @@ namespace Multilayered_Assignment.Controllers
     public class AccountController : Controller
     {
         //Sample Users Data, it can be fetched with the use of any ORM
-        private readonly Multilayered_AssignmentContext _context;
-        public AccountController(Multilayered_AssignmentContext context)
+        private readonly IAccountService _accountService;
+        public AccountController(IAccountService accountService)
         {
-            _context = context;
+            _accountService = accountService;
         }
         public IActionResult Login(string ReturnUrl = "/")
         {
@@ -29,7 +28,7 @@ namespace Multilayered_Assignment.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel objLoginModel)
         {
-            var users = await _context.LoginViewModel.ToListAsync();
+            var users = _accountService.GetAllLoginViews();
             
             if (ModelState.IsValid)
             {
@@ -71,8 +70,7 @@ namespace Multilayered_Assignment.Controllers
             if (ModelState.IsValid)
             {
                 loginViewModel.Role = "normal";
-                _context.Add(loginViewModel);
-                await _context.SaveChangesAsync();
+                _accountService.AddLogin(loginViewModel);
             }
             return LocalRedirect(loginViewModel.ReturnUrl);
         }

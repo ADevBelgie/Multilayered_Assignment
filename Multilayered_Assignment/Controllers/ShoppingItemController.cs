@@ -159,7 +159,6 @@ namespace Multilayered_Assignment.Controllers
         private bool ShoppingcartViewModelExists(int id)
         {
             return _shoppingItemService.GetAllShoppingItems().Any(e => e.ID == id);
-            //return _context.ShoppingItemViewModel.Any(e => e.ID == id);
         }
     }
 }

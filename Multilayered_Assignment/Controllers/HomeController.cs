@@ -7,24 +7,26 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Multilayered_Assignment.BLL.Services.ProductTShirtt;
 
 namespace Multilayered_Assignment.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly Multilayered_AssignmentContext _context;
+        private readonly IProductTshirttService _productTshirttService;
+
         public List<ProductTShirtViewModel> ProductList { get; set; } = new List<ProductTShirtViewModel>();
 
-        public HomeController(ILogger<HomeController> logger, Multilayered_AssignmentContext context)
+        public HomeController(ILogger<HomeController> logger, IProductTshirttService productTshirttService)
         {
             _logger = logger;
-            _context = context;
+            _productTshirttService = productTshirttService;
         }
 
         public async Task<IActionResult> Index(int? id=1)
         {
-            var productList = await _context.ProductTShirtViewModel.ToListAsync();
+            var productList = _productTshirttService.GetAllProductTshirtts();
             var onePageProduct = productList.FindAll(p => (p.ID >= id * 9 - 8) && (p.ID <= id * 9));
 
             ViewBag.PageId = id;
