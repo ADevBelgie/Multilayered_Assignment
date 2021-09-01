@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Multilayered_Assignment.Data;
+using Multilayered_Assignment.BLL.Services.Account;
+using Multilayered_Assignment.BLL.Services.ShoppingBag;
+using Multilayered_Assignment.BLL.Services.ShoppingItem;
+using Multilayered_Assignment.BLL.Services.ProductTShirtt;
 using Multilayered_Assignment.Models;
 using System;
 using System.Collections.Generic;
@@ -14,34 +17,34 @@ namespace Multilayered_Assignment.Controllers
     [Authorize]
     public class ShoppingItemController : Controller
     {
-        private readonly Multilayered_AssignmentContext _context;
+        private readonly IAccountService _accountService;
+        private readonly IShoppingBagService _shoppingBagService;
+        private readonly IShoppingItemService _shoppingItemService;
+        private readonly IProductTshirttService _productTshirttService;
 
-        public ShoppingItemController(Multilayered_AssignmentContext context)
+        public ShoppingItemController(IAccountService accountService, IShoppingBagService shoppingBagService, IShoppingItemService shoppingItemService, IProductTshirttService productTshirttService)
         {
-            _context = context;
+            _accountService = accountService;
+            _shoppingBagService = shoppingBagService;
+            _shoppingItemService = shoppingItemService;
+            _productTshirttService = productTshirttService;
         }
 
         // GET: Shoppingcart
         [Authorize]
         public async Task<IActionResult> Index()
         {
-            //var productlist = await _context.ProductTShirtViewModel.ToListAsync();
-            //var shoppingcart = await _context.ShoppingItemViewModel.ToListAsync();
-            ////.Include(s => s.product.ID == productlist.Find(p => p.ID == ))
             dynamic mymodel = new ExpandoObject();
-            mymodel.productlist = await _context.ProductTShirtViewModel.ToListAsync();
-            mymodel.shoppingcart = await _context.ShoppingItemViewModel.ToListAsync();
+            mymodel.productlist = _productTshirttService.GetAllProductTshirtts();
+            mymodel.shoppingcart = _shoppingItemService.GetAllShoppingItems();//this current gives all shopping items not just of the curretn user
             return View(mymodel);
         }
         [Authorize]
         public async Task<IActionResult> AddProductToCart(int id, int selectAmount = 1, string originC = "ShoppingItem", string originV = "Index")
         {
-            var LoginUsers = await _context.LoginViewModel
-                .ToListAsync();
-            var ShoppingItems = await _context.ShoppingItemViewModel
-                .ToListAsync();
-            var Shoppingbags = await _context.ShoppingBagViewModel
-                .ToListAsync();
+            var LoginUsers = _accountService.GetAllLoginViews();
+            var ShoppingItems = _shoppingItemService.GetAllShoppingItems();
+            var Shoppingbags = _shoppingBagService.GetAllShoppingBags();
 
             // Get id user
             var currentUser = LoginUsers.FirstOrDefault(l => l.UserName == User.Identity.Name);
@@ -62,20 +65,20 @@ namespace Multilayered_Assignment.Controllers
             if (currentUser.ShoppingBagId == 0)
             {
                 // Add shopping bag
-                _context.ShoppingBagViewModel.Add(new ShoppingBagViewModel()
+                _shoppingBagService.AddShoppingBag(new ShoppingBagViewModel()
                 {
                     LoginId = currentUser.LoginId,
                     TimeCreated = DateTime.Now
                 });
 
-                await _context.SaveChangesAsync();
-
-
                 // Add ShoppingBagId to LoginViewModel
-                currentUser.ShoppingBagId = _context.ShoppingBagViewModel.FirstOrDefault(x => x.LoginId == currentUser.LoginId).ShoppingBagId;
+                var currentShoppingBag = Shoppingbags.FirstOrDefault(l => l.LoginId == currentUser.LoginId);
+                currentUser.ShoppingBagId = currentShoppingBag.ShoppingBagId;
+                _accountService.UpdateLoginByID(currentUser);
+                //currentUser.ShoppingBagId = _context.ShoppingBagViewModel.FirstOrDefault(x => x.LoginId == currentUser.LoginId).ShoppingBagId;
 
-                _context.LoginViewModel.Update(currentUser);
-                await _context.SaveChangesAsync();
+                //_context.LoginViewModel.Update(currentUser);
+                //await _context.SaveChangesAsync();
             }
 
             var productToAdd = ShoppingItems.Find(p => p.ProductId == id && p.ShoppingBagId == currentUser.ShoppingBagId);

@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Multilayered_Assignment.Common\Multilayered_Assignment.Common.csproj" />
+    <ProjectReference Include="..\Multilayered_Assignment.DAL\Multilayered_Assignment.DAL.csproj" />
+  </ItemGroup>
+
+</Project>
