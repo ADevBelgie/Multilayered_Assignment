@@ -35,7 +35,7 @@ namespace Multilayered_Assignment.BLL.Services.Account
 
         public LoginViewModel UpdateLoginByID(LoginViewModel login)
         {
-            return _accountRepository.UpdateLoginByID(loginId, login);
+            return _accountRepository.UpdateLoginByID(login);
         }
     }
 }

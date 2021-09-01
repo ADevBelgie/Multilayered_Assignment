@@ -11,7 +11,9 @@ namespace Multilayered_Assignment.DAL.Data.Repositories.ShoppingItem
     {
         IEnumerable<ShoppingItemViewModel> GetAllShoppingItems();
         ShoppingItemViewModel GetShoppingItemByID(int id);
+        void RemoveShoppingItem(ShoppingItemViewModel shoppingItem);
         ShoppingItemViewModel AddShoppingItem(ShoppingItemViewModel shoppingItem);
+        ShoppingItemViewModel UpdateShoppingItemByID(ShoppingItemViewModel shoppingItem);
         void Save();
     }
 }

@@ -38,9 +38,21 @@ namespace Multilayered_Assignment.DAL.Data.Repositories.ShoppingItem
             return _context.ShoppingItemViewModel.FirstOrDefault(x => x.ID == id);
         }
 
+        public void RemoveShoppingItem(ShoppingItemViewModel shoppingItem)
+        {
+            _context.ShoppingItemViewModel.Remove(shoppingItem);
+        }
+
         public void Save()
         {
             _context.SaveChanges();
+        }
+
+        public ShoppingItemViewModel UpdateShoppingItemByID(ShoppingItemViewModel shoppingItem)
+        {
+            _context.ShoppingItemViewModel.Update(shoppingItem);
+            _context.SaveChanges();
+            return GetShoppingItemByID(shoppingItem.ID);
         }
     }
 }

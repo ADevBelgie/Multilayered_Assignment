@@ -75,27 +75,23 @@ namespace Multilayered_Assignment.Controllers
                 var currentShoppingBag = Shoppingbags.FirstOrDefault(l => l.LoginId == currentUser.LoginId);
                 currentUser.ShoppingBagId = currentShoppingBag.ShoppingBagId;
                 _accountService.UpdateLoginByID(currentUser);
-                //currentUser.ShoppingBagId = _context.ShoppingBagViewModel.FirstOrDefault(x => x.LoginId == currentUser.LoginId).ShoppingBagId;
-
-                //_context.LoginViewModel.Update(currentUser);
-                //await _context.SaveChangesAsync();
             }
 
-            var productToAdd = ShoppingItems.Find(p => p.ProductId == id && p.ShoppingBagId == currentUser.ShoppingBagId);
-            if (productToAdd != null)
+            var productToUpdate = ShoppingItems.Find(p => p.ProductId == id && p.ShoppingBagId == currentUser.ShoppingBagId);
+            if (productToUpdate != null)
             {
-                productToAdd.Amount += selectAmount;
+                productToUpdate.Amount += selectAmount;
+                _shoppingItemService.UpdateShoppingItemByID(productToUpdate);
             }
             else
             {
-                _context.Add(new ShoppingItemViewModel()
+                _shoppingItemService.AddShoppingItem(new ShoppingItemViewModel()
                 {
                     ProductId = id,
                     ShoppingBagId = currentUser.ShoppingBagId,
                     Amount = selectAmount
                 });
             }
-            await _context.SaveChangesAsync();
 
             if (originV == "Details")
             {
@@ -109,12 +105,9 @@ namespace Multilayered_Assignment.Controllers
         [Authorize]
         public async Task<IActionResult> RemoveProductToCart(int id, string originC = "ShoppingItem", string originV = "Index")
         {
-            var LoginUsers = await _context.LoginViewModel
-                .ToListAsync();
-            var ShoppingItems = await _context.ShoppingItemViewModel
-                .ToListAsync();
-            var Shoppingbags = await _context.ShoppingBagViewModel
-                .ToListAsync();
+            var LoginUsers = _accountService.GetAllLoginViews();
+            var ShoppingItems = _shoppingItemService.GetAllShoppingItems();
+            var Shoppingbags = _shoppingBagService.GetAllShoppingBags();
 
             // Get id user
             var currentUser = LoginUsers.FirstOrDefault(l => l.UserName == User.Identity.Name);
@@ -135,29 +128,23 @@ namespace Multilayered_Assignment.Controllers
             if (currentUser.ShoppingBagId == 0)
             {
                 // Add shopping bag
-                _context.ShoppingBagViewModel.Add(new ShoppingBagViewModel()
+                _shoppingBagService.AddShoppingBag(new ShoppingBagViewModel()
                 {
                     LoginId = currentUser.LoginId,
                     TimeCreated = DateTime.Now
                 });
 
-                await _context.SaveChangesAsync();
-
-
                 // Add ShoppingBagId to LoginViewModel
-                currentUser.ShoppingBagId = _context.ShoppingBagViewModel.FirstOrDefault(x => x.LoginId == currentUser.LoginId).ShoppingBagId;
-
-                _context.LoginViewModel.Update(currentUser);
-                await _context.SaveChangesAsync();
+                var currentShoppingBag = Shoppingbags.FirstOrDefault(l => l.LoginId == currentUser.LoginId);
+                currentUser.ShoppingBagId = currentShoppingBag.ShoppingBagId;
+                _accountService.UpdateLoginByID(currentUser);
             }
 
             var shoppingItemToRemove = ShoppingItems.Find(p => p.ProductId == id && p.ShoppingBagId == currentUser.ShoppingBagId);
             if (shoppingItemToRemove != null)
             {
-                _context.ShoppingItemViewModel.Remove(shoppingItemToRemove);
+                _shoppingItemService.RemoveShoppingItem(shoppingItemToRemove);
             }
-
-            await _context.SaveChangesAsync();
 
             if (originV == "Details")
             {
@@ -171,7 +158,8 @@ namespace Multilayered_Assignment.Controllers
         [Authorize]
         private bool ShoppingcartViewModelExists(int id)
         {
-            return _context.ShoppingItemViewModel.Any(e => e.ID == id);
+            return _shoppingItemService.GetAllShoppingItems().Any(e => e.ID == id);
+            //return _context.ShoppingItemViewModel.Any(e => e.ID == id);
         }
     }
 }

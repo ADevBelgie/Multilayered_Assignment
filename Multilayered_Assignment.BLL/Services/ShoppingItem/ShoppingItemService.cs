@@ -28,5 +28,15 @@ namespace Multilayered_Assignment.BLL.Services.ShoppingItem
         {
             return _shoppingItemRepository.GetShoppingItemByID(id);
         }
+
+        public void RemoveShoppingItem(ShoppingItemViewModel shoppingItem)
+        {
+            _shoppingItemRepository.RemoveShoppingItem(shoppingItem);
+        }
+
+        public ShoppingItemViewModel UpdateShoppingItemByID(ShoppingItemViewModel shoppingItem)
+        {
+            return _shoppingItemRepository.UpdateShoppingItemByID(shoppingItem);
+        }
     }
 }
