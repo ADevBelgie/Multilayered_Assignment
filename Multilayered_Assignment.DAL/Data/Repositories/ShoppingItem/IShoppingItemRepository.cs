@@ -13,7 +13,7 @@ namespace Multilayered_Assignment.DAL.Data.Repositories.ShoppingItem
         ShoppingItemViewModel GetShoppingItemByID(int id);
         void RemoveShoppingItem(ShoppingItemViewModel shoppingItem);
         ShoppingItemViewModel AddShoppingItem(ShoppingItemViewModel shoppingItem);
-        ShoppingItemViewModel UpdateShoppingItemByID(ShoppingItemViewModel shoppingItem);
+        ShoppingItemViewModel UpdateShoppingItem(ShoppingItemViewModel shoppingItem);
         void Save();
     }
 }

@@ -48,10 +48,10 @@ namespace Multilayered_Assignment.DAL.Data.Repositories.ShoppingItem
             _context.SaveChanges();
         }
 
-        public ShoppingItemViewModel UpdateShoppingItemByID(ShoppingItemViewModel shoppingItem)
+        public ShoppingItemViewModel UpdateShoppingItem(ShoppingItemViewModel shoppingItem)
         {
             _context.ShoppingItemViewModel.Update(shoppingItem);
-            _context.SaveChanges();
+            Save();
             return GetShoppingItemByID(shoppingItem.ID);
         }
     }

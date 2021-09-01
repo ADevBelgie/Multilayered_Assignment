@@ -39,9 +39,21 @@ namespace Multilayered_Assignment.DAL.Data.Repositories.ProductTShirtt
             return _context.ProductTShirtViewModel.FirstOrDefault(x => x.ID == id);
         }
 
+        public void RemoveProductTshirtt(ProductTShirtViewModel productTshirtt)
+        {
+            _context.ProductTShirtViewModel.Remove(productTshirtt);
+        }
+
         public void Save()
         {
             _context.SaveChanges();
+        }
+
+        public ProductTShirtViewModel UpdateProductTshirtt(ProductTShirtViewModel productTshirtt)
+        {
+            _context.ProductTShirtViewModel.Update(productTshirtt);
+            Save();
+            return GetProductTshirttByID(productTshirtt.ID);
         }
     }
 }

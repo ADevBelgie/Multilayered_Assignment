@@ -12,6 +12,8 @@ namespace Multilayered_Assignment.DAL.Data.Repositories.ProductTShirtt
         IEnumerable<ProductTShirtViewModel> GetAllProductTshirtts();
         ProductTShirtViewModel GetProductTshirttByID(int id);
         ProductTShirtViewModel AddProductTshirtt(ProductTShirtViewModel productTshirtt);
+        ProductTShirtViewModel UpdateProductTshirtt(ProductTShirtViewModel productTshirtt);
+        void RemoveProductTshirtt(ProductTShirtViewModel productTshirtt);
         void Save();
     }
 }

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Multilayered_Assignment.Data;
+using Multilayered_Assignment.BLL.Services.ProductTShirtt;
 using Multilayered_Assignment.Models;
 
 namespace Multilayered_Assignment.Controllers
@@ -14,18 +14,18 @@ namespace Multilayered_Assignment.Controllers
     [Authorize]
     public class ProductTShirttController : Controller
     {
-        private readonly Multilayered_AssignmentContext _context;
+        private readonly IProductTshirttService _productTshirttService;
 
-        public ProductTShirttController(Multilayered_AssignmentContext context)
+        public ProductTShirttController(IProductTshirttService productTshirttService)
         {
-            _context = context;
+            _productTshirttService = productTshirttService;
         }
 
         // GET: ProductTShirtt
         [Authorize]
         public async Task<IActionResult> Index()
         {
-            return View(await _context.ProductTShirtViewModel.ToListAsync());
+            return View(_productTshirttService.GetAllProductTshirtts());
         }
 
         // GET: ProductTShirtt/Details/5
@@ -37,8 +37,8 @@ namespace Multilayered_Assignment.Controllers
                 return NotFound();
             }
 
-            var productTShirtViewModel = await _context.ProductTShirtViewModel
-                .FirstOrDefaultAsync(m => m.ID == id);
+            var productTShirtViewModel = _productTshirttService.GetAllProductTshirtts()
+                .FirstOrDefault(m => m.ID == id);
             if (productTShirtViewModel == null)
             {
                 return NotFound();
@@ -63,8 +63,7 @@ namespace Multilayered_Assignment.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(productTShirtViewModel);
-                await _context.SaveChangesAsync();
+                _productTshirttService.AddProductTShirtt(productTShirtViewModel);
                 return RedirectToAction(nameof(Index));
             }
             return View(productTShirtViewModel);
@@ -78,8 +77,7 @@ namespace Multilayered_Assignment.Controllers
             {
                 return NotFound();
             }
-
-            var productTShirtViewModel = await _context.ProductTShirtViewModel.FindAsync(id);
+            var productTShirtViewModel = _productTshirttService.GetProductTShirttByID((int)id);
             if (productTShirtViewModel == null)
             {
                 return NotFound();
@@ -104,8 +102,7 @@ namespace Multilayered_Assignment.Controllers
             {
                 try
                 {
-                    _context.Update(productTShirtViewModel);
-                    await _context.SaveChangesAsync();
+                    _productTshirttService.UpdateProductTshirtt(productTShirtViewModel);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -132,8 +129,8 @@ namespace Multilayered_Assignment.Controllers
                 return NotFound();
             }
 
-            var productTShirtViewModel = await _context.ProductTShirtViewModel
-                .FirstOrDefaultAsync(m => m.ID == id);
+            var productTShirtViewModel = _productTshirttService.GetAllProductTshirtts()
+                .FirstOrDefault(m => m.ID == id);
             if (productTShirtViewModel == null)
             {
                 return NotFound();
@@ -148,15 +145,15 @@ namespace Multilayered_Assignment.Controllers
         [Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var productTShirtViewModel = await _context.ProductTShirtViewModel.FindAsync(id);
-            _context.ProductTShirtViewModel.Remove(productTShirtViewModel);
-            await _context.SaveChangesAsync();
+            
+            var productTShirtViewModel = _productTshirttService.GetProductTShirttByID(id);
+            _productTshirttService.RemoveProductTshirtt(productTShirtViewModel);
             return RedirectToAction(nameof(Index));
         }
 
         private bool ProductTShirtViewModelExists(int id)
         {
-            return _context.ProductTShirtViewModel.Any(e => e.ID == id);
+            return _productTshirttService.GetAllProductTshirtts().Any(e => e.ID == id);
         }
     }
 }

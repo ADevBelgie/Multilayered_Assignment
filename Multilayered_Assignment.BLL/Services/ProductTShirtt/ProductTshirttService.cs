@@ -32,5 +32,15 @@ namespace Multilayered_Assignment.BLL.Services.ProductTShirtt
         {
             return _productTshirttRepository.GetProductTshirttByID(id);
         }
+
+        public void RemoveProductTshirtt(ProductTShirtViewModel productTshirtt)
+        {
+            _productTshirttRepository.RemoveProductTshirtt(productTshirtt);
+        }
+
+        public ProductTShirtViewModel UpdateProductTshirtt(ProductTShirtViewModel productTshirtt)
+        {
+            return _productTshirttRepository.UpdateProductTshirtt(productTshirtt);
+        }
     }
 }
