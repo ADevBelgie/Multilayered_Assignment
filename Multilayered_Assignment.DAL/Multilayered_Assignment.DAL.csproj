@@ -22,4 +22,8 @@
     <ProjectReference Include="..\Multilayered_Assignment.Common\Multilayered_Assignment.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

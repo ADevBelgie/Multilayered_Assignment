@@ -615,6 +615,9 @@ namespace Multilayered_Assignment.DAL.Migrations
                     b.Property<int>("Amount")
                         .HasColumnType("int");
 
+                    b.Property<double>("Discount")
+                        .HasColumnType("float");
+
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 

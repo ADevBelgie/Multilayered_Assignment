@@ -5,6 +5,7 @@ using Multilayered_Assignment.BLL.Services.Account;
 using Multilayered_Assignment.BLL.Services.ShoppingBag;
 using Multilayered_Assignment.BLL.Services.ShoppingItem;
 using Multilayered_Assignment.BLL.Services.ProductTShirtt;
+using Multilayered_Assignment.BLL.Services.Discount;
 using Multilayered_Assignment.Models;
 using System;
 using System.Collections.Generic;
@@ -21,13 +22,15 @@ namespace Multilayered_Assignment.Controllers
         private readonly IShoppingBagService _shoppingBagService;
         private readonly IShoppingItemService _shoppingItemService;
         private readonly IProductTshirttService _productTshirttService;
+        private readonly IDiscountService _discountService;
 
-        public ShoppingItemController(IAccountService accountService, IShoppingBagService shoppingBagService, IShoppingItemService shoppingItemService, IProductTshirttService productTshirttService)
+        public ShoppingItemController(IAccountService accountService, IShoppingBagService shoppingBagService, IShoppingItemService shoppingItemService, IProductTshirttService productTshirttService, IDiscountService discountService)
         {
             _accountService = accountService;
             _shoppingBagService = shoppingBagService;
             _shoppingItemService = shoppingItemService;
             _productTshirttService = productTshirttService;
+            _discountService = discountService;
         }
 
         // GET: Shoppingcart
@@ -68,17 +71,19 @@ namespace Multilayered_Assignment.Controllers
             if (productToUpdate != null)
             {
                 productToUpdate.Amount += selectAmount;
-                _shoppingItemService.UpdateShoppingItemByID(productToUpdate);
+                _shoppingItemService.UpdateShoppingItem(productToUpdate);
             }
             else
             {
-                _shoppingItemService.AddShoppingItem(new ShoppingItemViewModel()
+                productToUpdate = _shoppingItemService.AddShoppingItem(new ShoppingItemViewModel()
                 {
                     ProductId = id,
                     ShoppingBagId = currentUser.ShoppingBagId,
                     Amount = selectAmount
                 });
             }
+            // Add discount if needed
+            AddDiscount(productToUpdate);
 
             if (originV == "Details")
             {
@@ -89,6 +94,14 @@ namespace Multilayered_Assignment.Controllers
                 return RedirectToAction(originV, originC);
             }
         }
+
+        private void AddDiscount(ShoppingItemViewModel productToUpdate)
+        {
+            // Complexity for discount can be added.
+            productToUpdate.Discount = _discountService.GetDiscountBulkBuy(productToUpdate.Amount);
+            _shoppingItemService.UpdateShoppingItem(productToUpdate);
+        }
+
         [Authorize]
         public async Task<IActionResult> RemoveProductToCart(int id, string originC = "ShoppingItem", string originV = "Index")
         {
@@ -114,6 +127,7 @@ namespace Multilayered_Assignment.Controllers
             // Add shopping bag to user if it cant find the bag trough ShoppingBagId
             AddShoppingBagToUser(currentUser, Shoppingbags);
 
+            // Remove item from shoppingItems
             var shoppingItemToRemove = ShoppingItems.Find(p => p.ProductId == id && p.ShoppingBagId == currentUser.ShoppingBagId);
             if (shoppingItemToRemove != null)
             {
@@ -144,7 +158,7 @@ namespace Multilayered_Assignment.Controllers
                 currentBag = _shoppingBagService.GetAllShoppingBags().FirstOrDefault(x => x.LoginId == currentUser.LoginId);
                 if (currentBag == null)
                 {
-                    _shoppingBagService.AddShoppingBag(new ShoppingBagViewModel()
+                    currentBag = _shoppingBagService.AddShoppingBag(new ShoppingBagViewModel()
                     {
                         LoginId = currentUser.LoginId,
                         TimeCreated = DateTime.Now

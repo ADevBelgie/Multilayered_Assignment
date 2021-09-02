@@ -15,5 +15,6 @@ namespace Multilayered_Assignment.Models
         public ProductTShirtViewModel Product { get; set; }
         [DisplayName("Aantal")]
         public int Amount { get; set; }
+        public double Discount { get; set; }
     }
 }

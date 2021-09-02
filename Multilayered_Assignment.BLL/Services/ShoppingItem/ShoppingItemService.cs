@@ -34,7 +34,7 @@ namespace Multilayered_Assignment.BLL.Services.ShoppingItem
             _shoppingItemRepository.RemoveShoppingItem(shoppingItem);
         }
 
-        public ShoppingItemViewModel UpdateShoppingItemByID(ShoppingItemViewModel shoppingItem)
+        public ShoppingItemViewModel UpdateShoppingItem(ShoppingItemViewModel shoppingItem)
         {
             return _shoppingItemRepository.UpdateShoppingItem(shoppingItem);
         }

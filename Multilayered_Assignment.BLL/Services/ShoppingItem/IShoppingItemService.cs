@@ -12,7 +12,7 @@ namespace Multilayered_Assignment.BLL.Services.ShoppingItem
         List<ShoppingItemViewModel> GetAllShoppingItems();
         ShoppingItemViewModel GetShoppingItemByID(int id);
         ShoppingItemViewModel AddShoppingItem(ShoppingItemViewModel shoppingItem);
-        ShoppingItemViewModel UpdateShoppingItemByID(ShoppingItemViewModel shoppingItem);
+        ShoppingItemViewModel UpdateShoppingItem(ShoppingItemViewModel shoppingItem);
         void RemoveShoppingItem(ShoppingItemViewModel shoppingItem);
     }
 }

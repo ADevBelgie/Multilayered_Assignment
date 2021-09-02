@@ -10,7 +10,7 @@ using Multilayered_Assignment.Data;
 namespace Multilayered_Assignment.DAL.Migrations
 {
     [DbContext(typeof(Multilayered_AssignmentContext))]
-    [Migration("20210901115043_init")]
+    [Migration("20210902082853_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -616,6 +616,9 @@ namespace Multilayered_Assignment.DAL.Migrations
 
                     b.Property<int>("Amount")
                         .HasColumnType("int");
+
+                    b.Property<double>("Discount")
+                        .HasColumnType("float");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");

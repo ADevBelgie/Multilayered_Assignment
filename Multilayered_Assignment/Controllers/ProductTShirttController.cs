@@ -11,7 +11,7 @@ using Multilayered_Assignment.Models;
 
 namespace Multilayered_Assignment.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "admin")]
     public class ProductTShirttController : Controller
     {
         private readonly IProductTshirttService _productTshirttService;
@@ -22,7 +22,7 @@ namespace Multilayered_Assignment.Controllers
         }
 
         // GET: ProductTShirtt
-        [Authorize]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Index()
         {
             return View(_productTshirttService.GetAllProductTshirtts());
@@ -48,7 +48,7 @@ namespace Multilayered_Assignment.Controllers
         }
 
         // GET: ProductTShirtt/Create
-        [Authorize]
+        [Authorize(Roles = "admin")]
         public IActionResult Create()
         {
             return View();
@@ -59,6 +59,7 @@ namespace Multilayered_Assignment.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Create([Bind("ID,Name,Price,Picture")] ProductTShirtViewModel productTShirtViewModel)
         {
             if (ModelState.IsValid)
@@ -70,7 +71,7 @@ namespace Multilayered_Assignment.Controllers
         }
 
         // GET: ProductTShirtt/Edit/5
-        [Authorize]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -90,7 +91,7 @@ namespace Multilayered_Assignment.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(int id, [Bind("ID,Name,Price,Picture")] ProductTShirtViewModel productTShirtViewModel)
         {
             if (id != productTShirtViewModel.ID)
@@ -121,7 +122,7 @@ namespace Multilayered_Assignment.Controllers
         }
 
         // GET: ProductTShirtt/Delete/5
-        [Authorize]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -142,7 +143,7 @@ namespace Multilayered_Assignment.Controllers
         // POST: ProductTShirtt/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             

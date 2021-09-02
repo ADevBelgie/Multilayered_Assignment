@@ -1,0 +1,8 @@
+﻿
+@if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
+{
+    @* If the user is logged in & has the admin role *@
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-controller="ProductTShirtt" asp-action="Index">Go to Admin Area</a>
+    </li>
+}

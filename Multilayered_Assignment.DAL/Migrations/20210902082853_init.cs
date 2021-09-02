@@ -68,7 +68,8 @@ namespace Multilayered_Assignment.DAL.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ShoppingBagId = table.Column<int>(type: "int", nullable: false),
                     ProductId = table.Column<int>(type: "int", nullable: false),
-                    Amount = table.Column<int>(type: "int", nullable: false)
+                    Amount = table.Column<int>(type: "int", nullable: false),
+                    Discount = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {

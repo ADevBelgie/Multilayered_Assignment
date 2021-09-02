@@ -5,11 +5,11 @@ VisualStudioVersion = 16.0.31424.327
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Multilayered_Assignment", "Multilayered_Assignment\Multilayered_Assignment.csproj", "{FC940E26-8B12-4636-808F-9712ADFC6602}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Multilayered_Assignment.DAL", "Multilayered_Assignment.DAL\Multilayered_Assignment.DAL.csproj", "{4932C79E-7FC1-4045-930E-7CFDB7C5D12E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Multilayered_Assignment.DAL", "Multilayered_Assignment.DAL\Multilayered_Assignment.DAL.csproj", "{4932C79E-7FC1-4045-930E-7CFDB7C5D12E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Multilayered_Assignment.BLL", "Multilayered_Assignment.BLL\Multilayered_Assignment.BLL.csproj", "{74F915D6-2B55-42C2-8165-78E741AF623C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Multilayered_Assignment.BLL", "Multilayered_Assignment.BLL\Multilayered_Assignment.BLL.csproj", "{74F915D6-2B55-42C2-8165-78E741AF623C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Multilayered_Assignment.Common", "Multilayered_Assignment.Common\Multilayered_Assignment.Common.csproj", "{15B5D56D-63D7-424C-880C-E8FDB5DDE53E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Multilayered_Assignment.Common", "Multilayered_Assignment.Common\Multilayered_Assignment.Common.csproj", "{15B5D56D-63D7-424C-880C-E8FDB5DDE53E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
