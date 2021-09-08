@@ -21,7 +21,9 @@ namespace Multilayered_Assignment.Data
         {
             //Login
             modelBuilder.Entity<LoginViewModel>()
-              .HasKey(l => new { l.LoginId });
+                .HasKey(l => new { l.LoginId });
+            modelBuilder.Entity<LoginViewModel>()
+                .HasAlternateKey(l => new { l.UserName });
             modelBuilder.Entity<LoginViewModel>() // one on one relation shoppingbag
                .HasOne(spb => spb.ShoppingBagViewModel)
                .WithOne(l => l.LoginViewModel)
@@ -29,7 +31,7 @@ namespace Multilayered_Assignment.Data
 
             //Shopping Bag
             modelBuilder.Entity<ShoppingBagViewModel>()
-               .HasKey(spb => new { spb.ShoppingBagId});
+               .HasKey(spb => new { spb.ShoppingBagId });
             modelBuilder.Entity<ShoppingBagViewModel>() // one on one relation Login
                .HasOne(l => l.LoginViewModel)
                .WithOne(spb => spb.ShoppingBagViewModel)
@@ -51,17 +53,17 @@ namespace Multilayered_Assignment.Data
 
             //Product
             modelBuilder.Entity<ProductTShirtViewModel>()
-               .HasKey(wd => new { wd.ID});
+               .HasKey(wd => new { wd.ID });
 
 
             IList<ProductTShirtViewModel> defaultStandards = new List<ProductTShirtViewModel>();
             for (int i = 1; i < 15; i++)
             {
-                defaultStandards.Add(new ProductTShirtViewModel() { ID= i * 5 - 4, Name = "Red Shirt", Price = 502, Picture = "red-shirt.jpg" });
-                defaultStandards.Add(new ProductTShirtViewModel() { ID= i * 5 - 3, Name = "Xmas Shirt", Price = 302, Picture = "christmas-shirt.jpg" });
-                defaultStandards.Add(new ProductTShirtViewModel() { ID= i * 5 - 2, Name = "King Shirt", Price = 1999, Picture = "king-shirt.jpg" });
-                defaultStandards.Add(new ProductTShirtViewModel() { ID= i * 5 - 1, Name = "Tom&Jerry Shirt", Price = 1999, Picture = "Tom-Jerry-shirt.jpg" });
-                defaultStandards.Add(new ProductTShirtViewModel() { ID= i * 5, Name = "Plain Shirt", Price = 1999, Picture = "plain-shirt.jpg" });
+                defaultStandards.Add(new ProductTShirtViewModel() { ID = i * 5 - 4, Name = "Red Shirt", Price = 502, Picture = "red-shirt.jpg" });
+                defaultStandards.Add(new ProductTShirtViewModel() { ID = i * 5 - 3, Name = "Xmas Shirt", Price = 302, Picture = "christmas-shirt.jpg" });
+                defaultStandards.Add(new ProductTShirtViewModel() { ID = i * 5 - 2, Name = "King Shirt", Price = 1999, Picture = "king-shirt.jpg" });
+                defaultStandards.Add(new ProductTShirtViewModel() { ID = i * 5 - 1, Name = "Tom&Jerry Shirt", Price = 1999, Picture = "Tom-Jerry-shirt.jpg" });
+                defaultStandards.Add(new ProductTShirtViewModel() { ID = i * 5, Name = "Plain Shirt", Price = 1999, Picture = "plain-shirt.jpg" });
             }
             modelBuilder.Entity<ProductTShirtViewModel>().HasData(defaultStandards);
 

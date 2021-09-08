@@ -10,7 +10,7 @@ using Multilayered_Assignment.Data;
 namespace Multilayered_Assignment.DAL.Migrations
 {
     [DbContext(typeof(Multilayered_AssignmentContext))]
-    [Migration("20210902082853_init")]
+    [Migration("20210902120359_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -46,9 +46,11 @@ namespace Multilayered_Assignment.DAL.Migrations
 
                     b.Property<string>("UserName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("LoginId");
+
+                    b.HasAlternateKey("UserName");
 
                     b.ToTable("LoginViewModel");
 
@@ -81,13 +83,19 @@ namespace Multilayered_Assignment.DAL.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Picture")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Price")
                         .HasColumnType("float");
+
+                    b.Property<string>("TshirtRegistrationNumer")
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)");
 
                     b.HasKey("ID");
 

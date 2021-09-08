@@ -66,13 +66,20 @@ namespace Multilayered_Assignment.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register([Bind("LoginId,UserName,Password,RememberLogin,ReturnUrl,Role")] LoginViewModel loginViewModel)
         {
-
+            var userNameExists = _accountService.GetAllLoginViews().FirstOrDefault(x => x.UserName == loginViewModel.UserName);
+            if (userNameExists != null)
+            {
+                ModelState.AddModelError("UserName", "Username is already taken");
+            }
+            
             if (ModelState.IsValid)
             {
                 loginViewModel.Role = "normal";
                 _accountService.AddLogin(loginViewModel);
+                return LocalRedirect(loginViewModel.ReturnUrl);
             }
-            return LocalRedirect(loginViewModel.ReturnUrl);
+
+            return View(loginViewModel);
         }
         public async Task<IActionResult> Register(string ReturnUrl = "/")
         {

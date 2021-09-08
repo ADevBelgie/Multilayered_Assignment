@@ -38,8 +38,8 @@ namespace Multilayered_Assignment.Controllers
         public async Task<IActionResult> Index()
         {
             dynamic mymodel = new ExpandoObject();
-            mymodel.productlist = _productTshirttService.GetAllProductTshirtts();
-            mymodel.shoppingcart = _shoppingItemService.GetAllShoppingItems();//this current gives all shopping items not just of the curretn user
+            mymodel.productList = _productTshirttService.GetAllProductTshirtts();
+            mymodel.shoppingItems = _shoppingItemService.GetAllShoppingItems();//this current gives all shopping items not just of the curretn user
             return View(mymodel);
         }
         [Authorize]

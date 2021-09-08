@@ -3,11 +3,11 @@
 @model dynamic
 @{
     ViewData["Title"] = "Index";
-    var productlist = (List<ProductTShirtViewModel>)Model.productlist;
-    var shoppingP = productlist.FirstOrDefault(m => true);
+    var productList = (List<ProductTShirtViewModel>)Model.productList;
+    var shoppingP = productList.FirstOrDefault(m => true);
 
-    var shoppingcart = (List<ShoppingItemViewModel>)Model.shoppingcart;
-    var shoppingC = shoppingcart.FirstOrDefault(m => true);
+    var shoppingItems = (List<ShoppingItemViewModel>)Model.shoppingItems;
+    var shoppingC = shoppingItems.FirstOrDefault(m => true);
 }
 
 <h1>Hier is uw Shopping Cart</h1>
@@ -35,12 +35,13 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in shoppingcart)
+        @foreach (var item in shoppingItems)
         {
-            var product = productlist.Find(p => p.ID == item.ProductId);
+            var product = productList.Find(p => p.ID == item.ProductId);
             var name = product.Name;
             var price = product.Price;
-            var total = item.Amount * price;
+            var discount = item.Discount;
+            var total = item.Amount * price * (1 - discount);
             <tr>
                 <td>
                     @name
@@ -52,7 +53,7 @@
                     @price
                 </td>
                 <td>
-                    @total
+                    @item.Amount (amount) * $@price  @(100 * discount) %(discount) = @total
                 </td>
                 <td>
                     @*<a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |*@

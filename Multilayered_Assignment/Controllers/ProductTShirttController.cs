@@ -60,7 +60,7 @@ namespace Multilayered_Assignment.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "admin")]
-        public async Task<IActionResult> Create([Bind("ID,Name,Price,Picture")] ProductTShirtViewModel productTShirtViewModel)
+        public async Task<IActionResult> Create([Bind("ID,Name,Price,Picture,TshirtRegistrationNumer")] ProductTShirtViewModel productTShirtViewModel)
         {
             if (ModelState.IsValid)
             {
@@ -92,7 +92,7 @@ namespace Multilayered_Assignment.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "admin")]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Name,Price,Picture")] ProductTShirtViewModel productTShirtViewModel)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Name,Price,Picture,TshirtRegistrationNumer")] ProductTShirtViewModel productTShirtViewModel)
         {
             if (id != productTShirtViewModel.ID)
             {
